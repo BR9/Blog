@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Request;
 use Auth;
 use DB;
 
@@ -57,7 +58,7 @@ class MBlog_management extends Model
             ->Join('categories', 'blogs.category_id', '=', 'categories.id')
             ->orderBy('blogs.id', 'DESC');
 
-        if(Auth::user()->role == 2){
+        if(Auth::user()->role == 2 and Request::segment('2') == 'blog-management'){
 
             $this->query->where('blogs.created_user', Auth::user()->id);
 
@@ -87,8 +88,8 @@ class MBlog_management extends Model
             ->Join('users', 'blogs.created_user', '=', 'users.id')->orderBy('blogs.id', 'DESC');
 
         if(Auth::user()->role == 2){
-
-            $this->query->where('created_user', Auth::user()->id);
+    
+            $this->query->where('blogs.created_user', Auth::user()->id);
 
         }
 
