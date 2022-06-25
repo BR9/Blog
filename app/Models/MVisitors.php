@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Auth;
+
 class MVisitors extends Model
 {
     protected $table        =   'visitors';
@@ -13,8 +15,16 @@ class MVisitors extends Model
 
     public function total(){
 
-        $this->query        =   MVisitors::count();
-        return $this->query;
+        $this->query        =   MVisitors::Join('blogs', 'visitors.blog_id', '=', 'blogs.id');
+
+        if(Auth::user()->role == 2){
+
+            $this->query->where('blogs.created_user', Auth::user()->id);
+
+        }
+
+        return $this->query->count();
+
 
     }
 
