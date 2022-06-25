@@ -58,7 +58,7 @@ class MBlog_management extends Model
             ->Join('categories', 'blogs.category_id', '=', 'categories.id')
             ->orderBy('blogs.id', 'DESC');
 
-        if(Auth::user()->role == 2 and Request::segment('2') == 'blog-management'){
+        if(isset(Auth::user()->role) and Auth::user()->role == 2 and Request::segment('2') == 'blog-management'){
 
             $this->query->where('blogs.created_user', Auth::user()->id);
 
