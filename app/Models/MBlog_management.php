@@ -35,7 +35,7 @@ class MBlog_management extends Model
 
         $this->query        =   MBlog_management::select(DB::raw('(SELECT COUNT(id) FROM visitors WHERE blog_id = blogs.id) as total_visitors'),'blogs.*', 'users.name', 'users.surname', 'users.profile_photo_path')->Join('users', 'blogs.created_user', '=', 'users.id')->orderBy('blogs.id', 'DESC');
 
-        if(Auth::user()->role == 2){
+        if(isset(Auth::user()->role) and Auth::user()->role == 2){
 
             $this->query->where('created_user', Auth::user()->id);
 
@@ -86,9 +86,9 @@ class MBlog_management extends Model
         $this->query        =   MBlog_management::select('blogs.*', 'users.name', 'users.surname', 'users.profile_photo_path', 'categories.category_name', 'categories.id as category_id')
             ->Join('categories', 'blogs.category_id', '=', 'categories.id')->orderBy('blogs.id', 'DESC')
             ->Join('users', 'blogs.created_user', '=', 'users.id')->orderBy('blogs.id', 'DESC');
-
-        if(Auth::user()->role == 2){
     
+        if(isset(Auth::user()->role) and Auth::user()->role == 2){
+
             $this->query->where('blogs.created_user', Auth::user()->id);
 
         }
